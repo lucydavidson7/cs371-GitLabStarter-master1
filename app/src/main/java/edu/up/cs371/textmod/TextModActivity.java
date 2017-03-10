@@ -18,6 +18,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.Button;
 import java.util.ArrayList;
 
 public class TextModActivity extends ActionBarActivity {
@@ -27,6 +30,15 @@ public class TextModActivity extends ActionBarActivity {
 
     // instance variables containing widgets
     private ImageView imageView; // the view that shows the image
+    private TextView textView;
+    private EditText editText;
+    private Button clear;
+    private Button upper;
+    private Button lower;
+    private Button reverse;
+    private Button copyName;
+    private Spinner spinner;
+    private Button removeSpace;
 
     /**
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -40,6 +52,16 @@ public class TextModActivity extends ActionBarActivity {
 
         // set instance variables for our widgets
         imageView = (ImageView)findViewById(R.id.imageView);
+        textView = (TextView)findViewById(R.id.textView);
+        editText = (EditText)findViewById(R.id.editText);
+        clear = (Button)findViewById(R.id.clear);
+        upper = (Button)findViewById(R.id.upper);
+        lower = (Button)findViewById(R.id.lower);
+        reverse = (Button)findViewById(R.id.reverse);
+        copyName = (Button)findViewById(R.id.copyName);
+        spinner = (Spinner)findViewById(R.id.spinner);
+        removeSpace = (Button)findViewById(R.id.removeSpace);
+
 
         // Set up the spinner so that it shows the names in the spinner array resources
         //
@@ -72,6 +94,10 @@ public class TextModActivity extends ActionBarActivity {
 
         // define a listener for the spinner
         spinner.setOnItemSelectedListener(new MySpinnerListener());
+        copyName.setOnClickListener(new ButtonListener());
+        removeSpace.setOnClickListener(new ButtonListener());
+        clear.setOnClickListener(new ButtonListener());
+        upper.setOnClickListener(new ButtonListener());
 
     }
 
@@ -126,6 +152,36 @@ public class TextModActivity extends ActionBarActivity {
         @Override
         public void onNothingSelected(AdapterView<?> parentView) {
             // your code here
+        }
+    }
+
+    private class ButtonListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+
+            int select = view.getId();
+
+            if (select == R.id.copyName) {
+                String combine = editText.getText() + (String)spinner.getSelectedItem();
+                editText.setText(combine);
+            }
+
+            if (select == R.id.removeSpace) {
+                String orig = editText.getText().toString(); //Get original text.
+                String mod = orig.replace(" ", ""); //Modify text to remove spaces.
+                editText.setText(mod); //Set the text to the modified text.
+            }
+
+            if (select == R.id.clear) {
+                editText.getText().clear();
+            }
+
+            if (select == R.id.upper) {
+                String text = editText.getText().toString().toUpperCase();
+                editText.setText(text);
+            }
+
         }
     }
 }
